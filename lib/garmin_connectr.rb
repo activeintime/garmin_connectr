@@ -23,7 +23,8 @@ class GarminConnectr
     
     activity_list = []
     
-    agent = WWW::Mechanize.new { |agent| agent.user_agent_alias = 'Mac Safari' }
+    # agent = WWW::Mechanize.new { |agent| agent.user_agent_alias = 'Mac Safari' }
+    agent = Mechanize.new
     page = agent.get('http://connect.garmin.com/signin')
     form = page.form('login')
     form.send('login:loginUsernameField', username)

@@ -46,5 +46,9 @@ Gem::Specification.new do |s|
     end
   else
   end
+
+  s.add_runtime_dependency 'fastercsv'
+  s.add_runtime_dependency 'simple-rss'
+  s.add_runtime_dependency 'mechanize'
 end
 
