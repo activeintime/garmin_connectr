@@ -41,13 +41,12 @@ Gem::Specification.new do |s|
   if s.respond_to? :specification_version then
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.3.0') then
     else
     end
   else
   end
 
-  s.add_runtime_dependency 'fastercsv'
   s.add_runtime_dependency 'simple-rss'
   s.add_runtime_dependency 'mechanize'
 end
