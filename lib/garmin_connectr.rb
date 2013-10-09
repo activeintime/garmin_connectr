@@ -9,6 +9,12 @@ class GarminConnectr
   
   def initialize
   end
+
+  def verify_creds( opts )
+    agent = login_mechanize( opts )
+    error_message = agent.page.search(".errorMessage")
+    message = error_message.first.text.include?("Invalid") ? error_message.first.text : "Credentials are valid."
+  end
   
   def load_activity( opts )
     id = opts[:id]
@@ -17,19 +23,9 @@ class GarminConnectr
   end
   
   def load_activity_list( opts )
-    username = opts[:username]
-    password = opts[:password]
+    agent = login_mechanize( opts )
     limit = opts[:limit] || 50
-    
     activity_list = []
-    
-    # agent = WWW::Mechanize.new { |agent| agent.user_agent_alias = 'Mac Safari' }
-    agent = Mechanize.new
-    page = agent.get('http://connect.garmin.com/signin')
-    form = page.form('login')
-    form.send('login:loginUsernameField', username)
-    form.send('login:password', password)
-    form.submit
     
     page = agent.get('http://connect.garmin.com/activities')
 
@@ -42,7 +38,22 @@ class GarminConnectr
       activity = GarminConnectrActivity.new( :id => aid, :name => name )
       activity_list << activity
     end
-    activity_list    
+    activity_list
+  end
+
+  def login_mechanize( opts )
+    username = opts[:username]
+    password = opts[:password]
+
+    # agent = WWW::Mechanize.new { |agent| agent.user_agent_alias = 'Mac Safari' }
+    agent = Mechanize.new
+    page = agent.get('http://connect.garmin.com/signin')
+    form = page.form('login')
+    form.send('login:loginUsernameField', username)
+    form.send('login:password', password)
+    form.submit
+
+    agent
   end
   
 end
